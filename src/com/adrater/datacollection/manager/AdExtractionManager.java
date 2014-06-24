@@ -68,7 +68,7 @@ public class AdExtractionManager {
 	
 	public static void main(String[] args) throws UnknownHostException {
 		AdExtractionManager adMgr = new AdExtractionManager();
-//		adMgr.extractAndLoadAds("http://sfbay.craigslist.org/bbb/");
+	//	adMgr.extractAndLoadAds("http://sfbay.craigslist.org/bbb/");
 		adMgr.loadFromFile("output");
 	}
 }

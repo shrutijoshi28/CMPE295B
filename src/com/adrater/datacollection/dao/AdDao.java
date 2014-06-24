@@ -108,9 +108,23 @@ public class AdDao {
 		
 	}
 	
+	private void deleteAllItems(){
+		
+		DBCollection adCollection = db.getCollection(AD_COLLECTION_NAME);
+		DBCursor cursor = adCollection.find();
+		
+		while(cursor.hasNext()){
+			
+				BasicDBObject obj =  (BasicDBObject) cursor.next();
+				adCollection.remove(obj);
+						
+		}
+	}
+	
 	public static void main(String[] args) throws UnknownHostException {
 		AdDao dao = new AdDao();
-		dao.getAllCollections();
+	//	dao.getAllCollections();
+		dao.deleteAllItems();
 	}
 	
 }

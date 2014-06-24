@@ -22,6 +22,7 @@ public class LinkGetter {
 	private static final long RESULT_FETCH_DELAY = 3000;
 	private static final String OUTPUT_DIR = "output/";
 	private static int RESULT_LIMIT = 3000;
+	private static final int MAX_RETRY = 2;
 	
 	private String baseURL;
 	private String lastResultURL;
@@ -39,6 +40,7 @@ public class LinkGetter {
 		String nextPageUrl = this.baseURL;
 		// get list of all the ads from all the search pages
 		do {
+			int tryCnt = 1;
 			try {
 				// get the url to next page
 				doc = getDocument(nextPageUrl);
@@ -49,6 +51,19 @@ public class LinkGetter {
 					adList.addAll(currList);
 
 				// get the ad details
+				for(int i = 0; i < currList.size() ; i++){
+					try{
+						getAdDetails(currList.get(i));
+						tryCnt = 1;
+					}catch(IOException e){
+						if(tryCnt >= MAX_RETRY)
+							continue;
+						tryCnt++;
+						i--;
+					}
+					
+				}
+				
 				for (AdVO adVO : currList) {
 					getAdDetails(adVO);
 					saveAsJSON(adVO);
@@ -221,8 +236,14 @@ public class LinkGetter {
 		Elements postBody = doc
 				.getElementsByAttributeValue("id", "postingbody");
 		adVo.setAdDetails(postBody.text());
-		// System.out.println("\t Post : " + postBody.text());
-		// get the posting details
+		
+		// get the posting time
+		Elements postDateElems = doc.getElementsByTag("time");
+		if(postDateElems.size() > 0){
+			Element postDate = postDateElems.get(postDateElems.size()-1);
+			adVo.setPostDate(postDate.attr("datetime"));
+			
+		}
 
 		return adVo;
 

@@ -1,9 +1,16 @@
 package com.adrater.datacollection.vo;
 
+import org.apache.solr.client.solrj.beans.Field;
+
 public class LocationVO {
 	
+	@Field("lattitude_p")
 	private String lattitude;
+	
+	@Field("longitude_p")
 	private String longitude;
+	
+	@Field("info_t")
 	private String info;
 	
 		

@@ -1,8 +1,13 @@
 package com.adrater.datacollection.vo;
 
-public class CategoryVO {
+import org.apache.solr.client.solrj.beans.Field;
 
+public class CategoryVO {
+	
+	@Field("category_string")
 	private String category;
+	
+	@Field("url")
 	private String link;
 	
 	public CategoryVO(){
